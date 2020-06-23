@@ -3,14 +3,15 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <script src="./js/abcjs_plugin_5.9.1-min.js" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="../css/abcjsmidi.css">
         <script src="./js/abcjs_basic_5.9.1-min.js" type="text/javascript"></script>
+        <script src="./js/abcjs_plugin_5.9.1-min.js" type="text/javascript"></script>
         <script src="./app.js" type="text/javascript" defer></script>
         <title>Musical Inspiration</title>
     </head>
     <body>
         <textarea id="testTextarea" rows="16" cols="80">X:0
-M:C
+M:3/4
 L:1/8
 Q:1/4=120
 R:Klezmer
@@ -20,5 +21,6 @@ Ade|:"Dm"(f2d)e gf|"A7"e2^c4|"Gm"B>>^c BA BG|"A"A3Ade|"Dm"(f2d)e gf|"A7"e2^c4|
 "Dm"A3 DEF|"Gm"(G2D)EFG|"Dm"A2F4|"E°"E>>Fy "(A7)"ED^C2|1"Dm"D3DEF:|2"Dm"D6||</textarea>
         <button id="testButton" type="button">Test</button>
         <div id="sheetmusic"></div>
+        <div id="midiplayer" class="abcjs-large"></div>
     </body>
 </html>
