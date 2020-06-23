@@ -1,5 +1,6 @@
 function onClickTestButton(event) {
-    console.log("Test: " + ABCJS.signature);
+    const testAbcString = document.getElementById("testTextarea").value;
+    ABCJS.renderAbc("sheetmusic", testAbcString, { });
 }
 
 (() => {
