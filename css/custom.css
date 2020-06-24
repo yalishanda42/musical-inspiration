@@ -15,3 +15,7 @@ svg, rect, path {
 .abcjs-inline-audio {
     background-color: #fff0
 }
+
+#tonic, #scale {
+    width: inherit;
+}

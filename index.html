@@ -16,11 +16,63 @@
         <section class="padding-ten-top">
             <div class="container">
                 <div class="text-center xs-padding-50px-top">
-                    <h1 class="text-white">A random musical inspiration for musicians in need.</h1>
-                    <p class="text-white"><i>Expect it soon...</i></p>
+                    <h1 class="text-white font-size48 md-font-size44 sm-font-size36 xs-font-size28 font-weight-600 margin-40px-bottom sm-margin-30px-bottom xs-margin-20px-bottom">A random musical inspiration for musicians in need.</h1>
+                    <p class="text-white font-size22 md-font-size20 sm-font-size18 xs-font-size16 font-weight-300 width-75 xs-width-90 center-col margin-40px-bottom sm-margin-30px-bottom xs-margin-25px-bottom"><i>Expect it soon...</i></p>
                     <a id="testButton" href="javascript:void(0)" class="btn1">Test</a>
                     <div id="sheetmusic"></div>
                     <div id="midiplayer" class="abcjs-large"></div>
+                    <div class="row">
+                        <div class="col-6 text-right margin-40px-bottom margin-40px-top sm-margin-30px-bottom">
+                            <select id="tonic" class="btn1">
+                                <optgroup label="Tonic">
+                                    <option value="0">C</option>
+                                    <option value="1">C# / Db</option>
+                                    <option value="2" selected>D</option>
+                                    <option value="3">D# / Eb</option>
+                                    <option value="4">E</option>
+                                    <option value="5">F</option>
+                                    <option value="6">F# / Gb</option>
+                                    <option value="7">G</option>
+                                    <option value="8">G# / Ab</option>
+                                    <option value="9">A</option>
+                                    <option value="10">A# / Bb</option>
+                                    <option value="11">B</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="col-6 text-left margin-40px-bottom margin-40px-top sm-margin-30px-bottom">
+                            <select id="scale" class="btn1">
+                                <optgroup label="Major and minor modes">
+                                    <option value="Minor">Minor</option>
+                                    <option value="Major">Major</option>
+                                    <option value="Dorian">Dorian</option>
+                                    <option value="Phrygian">Phrygian</option>
+                                    <option value="Lydian">Lydian</option>
+                                    <option value="Mixolydian">Mixolydian</option>
+                                    <option value="Locrian">Locrian</option>
+                                </optgroup>
+                                <optgroup label="Minor variations">
+                                    <option value="Harmonic minor">Harmonic minor</option>
+                                    <option value="Melodic minor">Melodic minor</option>
+                                </optgroup>
+                                <optgroup label="Gypsy scales (Мазни)">
+                                    <option value="Phrygian Dominant" selected>Phrygian Dominant (Мазната)</option>
+                                    <option value="Gypsy major">Gypsy major (Двойно мазната)</option>
+                                    <option value="Gypsy minor">Gypsy minor</option>
+                                </optgroup>
+                                <optgroup label="Pentatonics">
+                                    <option value="Minor pentatonic">Minor pentatonic</option>
+                                    <option value="Major pentatonic">Major pentatonic</option>
+                                    <option value="Japanese">Japanese (Мазна пентатоника)</option>
+                                    <option value="South-East Asian">South-East Asian</option>
+                                </optgroup>
+                                <optgroup label="Blues">
+                                    <option value="Minor blues">Minor blues</option>
+                                    <option value="Major blues">Major blues</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
