@@ -11,3 +11,7 @@ svg, rect, path {
 .abcjs-top-of-system {
     visibility: hidden;
 }
+
+.abcjs-inline-audio {
+    background-color: #fff0
+}

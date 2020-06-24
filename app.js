@@ -3,8 +3,7 @@ function generateAbcString() {
     return `X:0
 M:3/4
 L:1/8
-Q:1/4=120
-R:Klezmer
+R:Maznata scale
 K:Dm
 Ade|:"Dm"(f2d)e gf|"A7"e2^c4|"Gm"B>>^c BA BG|"A"A3Ade|"Dm"(f2d)e gf|"A7"e2^c4|
 "Gm"A>>B "A7"AG FE|1"Dm"D3Ade:|2"Dm"D3DEF||:"Gm"(G2D)E FG|"Dm"A2F4|"Gm"B>>c "A7"BA BG|
