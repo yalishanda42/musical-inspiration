@@ -10,24 +10,106 @@ class Generator {
         }
 
         const defaultNoteHeader = "L:1/"+ timeSignatureLower;
-        const keyHeader = "K:" + Generator.keyNotation(tonic, scale);
+        const keyHeader = "K:" + Generator.tonicNotation(tonic, scale) + Generator.scaleNotation(scale);
         const tempoHeader = "Q:" + tempoInBpm
-        return "X:0\n" + timeSigHeader + "\n" + defaultNoteHeader + "\n" + keyHeader + "\n" + tempoHeader + "\n";
+        const result = "X:0\n" + timeSigHeader + "\n" + defaultNoteHeader + "\n" + keyHeader + "\n" + tempoHeader + "\n";
+        return result;
     }
 
-    static keyNotation(tonic, scale) {
-        // TODO
-        return "Dm"
+    static scaleNotation(scaleString) {
+        const scaleNotations = {
+            "Minor": "minor",
+            "Major": "major",
+            "Dorian": "dorian",
+            "Phrygian": "phrygian",
+            "Lydian": "lydian",
+            "Mixolydian": "mixolydian",
+            "Locrian": "locrian",
+            "Harmonic minor": "minor",
+            "Melodic minor": "minor",
+            "Phrygian Dominant": "minor",
+            "Gypsy major": "major",
+            "Gypsy minor": "minor",
+            "Minor pentatonic": "minor",
+            "Major pentatonic": "major",
+            "Japanese": "minor",
+            "South-East Asian": "minor",
+            "Minor blues": "minor",
+            "Major blues": "major"
+        }
+        return scaleNotations[scaleString];
     }
 
-    static noteAccidentalsInKey(tonic, scale) {
-        // TODO
-        return ["", "_", "^", "", "", "", ""];
+    static tonicNotation(tonic, scale) {
+        const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+        var note = notes[tonic];
+        const scaleNotation = Generator.scaleNotation(scale);
+        const sharpScaleIsIncorrect = teoria.note(note).scale(scaleNotation).simple()
+            .map(n => n.substring(1))
+            .some(a => a === "x" || a === "bb");
+
+        if (sharpScaleIsIncorrect) {
+            note = notes[+tonic + 1] + "b"; // assumes note was a sharp
+        }
+
+        return note;
     }
 
-    static intervalTypesInKey(scale) {
-        // TODO
-        return [2, 2, 2, 2, 2, 2, 2];
+    static noteDifferencesToBaseScale(scale) {
+        const deltas = {
+            "Minor": [0, 0, 0, 0, 0, 0, 0],
+            "Major": [0, 0, 0, 0, 0, 0, 0],
+            "Dorian": [0, 0, 0, 0, 0, 0, 0],
+            "Phrygian": [0, 0, 0, 0, 0, 0, 0],
+            "Lydian": [0, 0, 0, 0, 0, 0, 0],
+            "Mixolydian": [0, 0, 0, 0, 0, 0, 0],
+            "Locrian": [0, 0, 0, 0, 0, 0, 0],
+            "Harmonic minor": [0, 0, 0, 0, 0, 0, +1], // to minor
+            "Melodic minor": [0, 0, 0, 0, 0, +1, +1], // to minor
+            "Phrygian Dominant": [0, -1, +1, 0, 0, 0, 0], // to minor
+            "Gypsy major": [0, -1, +1, 0, 0, 0, +1], // to minor
+            "Gypsy minor": [0, -1, +1, +1, 0, 0, +1], // to minor
+            "Minor pentatonic": [0, 0, 0, 0, 0], // to minor pentatonic
+            "Major pentatonic": [0, 0, 0, 0, 0], // to major pentatonic
+            // "Japanese": [0, -1, 0, 0, 0],  // to minor pentatonic // TODO
+            // "Minor blues": [0, 0, 0, 0, 0, 0],  // to minor blues (6-tonic) // TODO
+            // "Major blues": [0, 0, 0, 0, 0, 0] // to major blues (6-tonic) // TODO
+        }
+        return deltas[scale];
+    }
+
+    static accidentalValueToAbcNotation(accidentalInt) {
+        switch (accidentalInt) {
+            case -2:
+                return "__";
+            case -1:
+                return "_";
+            case 0:
+                return "=";
+            case +1:
+                return "^";
+            case +2:
+                return "^^";
+            default:
+                return "";
+        }
+    }
+
+    static noteNotationsForScale(tonic, scale) {
+        const tonicName = Generator.tonicNotation(tonic, scale);
+        const baseScaleName = Generator.scaleNotation(scale);
+        const deltas = Generator.noteDifferencesToBaseScale(scale);
+
+        if (deltas.every(n => n === 0)) {
+            if (scale === "Minor pentatonic") {
+                baseScaleName = "minorpentatonic";
+            } else if (scale === "Major pentatonic") {
+                baseScaleName = "majorpentatonic";
+            }
+            return teoria.note(tonicName).scale(baseScaleName).notes().map(n => n.name());
+        }
+
+        return teoria.note(tonicName).scale(baseScaleName).notes().map((n, i) => (deltas[i] !== 0) ? Generator.accidentalValueToAbcNotation(n.accidentalValue() + deltas[i]) + n.name() : n.name());
     }
 
     static generateRandomRhythmWithPauses(beats=4, beatNote=4, bars=2) {

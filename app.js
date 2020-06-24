@@ -1,12 +1,17 @@
 function onClickRhythmButton(event) {
+    const tonic = document.getElementById("tonic").value;
+    const scale = document.getElementById("scale").value;
+
     // TEST
-    const headers = Generator.generateAbcHeaders("D", "Phrygian Dominant", 120);
+    const headers = Generator.generateAbcHeaders(tonic, scale, 120);
     var rhythmPauses = Generator.generateRandomRhythmWithPauses();
 
-    rhythmPauses = rhythmPauses.replace(/z/g, "D");
+    rhythmPauses = rhythmPauses.replace(/z/g, Generator.tonicNotation(tonic, scale));
     // ====
 
     abcString = headers + rhythmPauses;
+
+    console.log('rhythmPauses', rhythmPauses);
 
     const cursorControl = { /* nani? */ };
     const abcOptions = { add_classes: true };
