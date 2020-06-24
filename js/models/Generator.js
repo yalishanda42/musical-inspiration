@@ -114,10 +114,13 @@ class Generator {
 
     static generateRandomRhythmWithPauses(beats=4, beatNote=4, bars=2) {
         // TODO
-        return "z/2z/2 z/2z/4z/4 z/2z/2 z | z/2z/2 z/2z/4z/4 (3z/z/z/ z";
+        return "z/2z/2 z/2z/4z/4 z/2z/2 z | z/2z/2 z/2z/4z/4 (3z/z/z/ z"; // TEST
     }
 
     static generateRandomMelody(rhythmAbcString, tonic, scale) {
-        // TODO
+        // TODO: improve algorithm, add tones from more octaves
+        const notes = Generator.noteNotationsForScale(tonic, scale).concat("z");
+        var result = rhythmAbcString.replace(/z/g, (z) => notes[Math.floor(Math.random() * notes.length)])
+        return result;
     }
 }

@@ -1,18 +1,41 @@
+var hasRhythm = false;
+var hasMelody = false;
+var rhythmString = null;
+
 function onClickRhythmButton(event) {
     const tonic = document.getElementById("tonic").value;
     const scale = document.getElementById("scale").value;
 
-    // TEST
     const headers = Generator.generateAbcHeaders(tonic, scale, 120);
-    var rhythmPauses = Generator.generateRandomRhythmWithPauses();
+    const rhythmPauses = Generator.generateRandomRhythmWithPauses();
 
-    rhythmPauses = rhythmPauses.replace(/z/g, Generator.tonicNotation(tonic, scale));
-    // ====
+    const rhythmTonic = rhythmPauses.replace(/z/g, Generator.tonicNotation(tonic, scale));
 
-    abcString = headers + rhythmPauses;
+    loadNewABC(headers + rhythmTonic);
 
-    console.log('rhythmPauses', rhythmPauses);
+    hasRhythm = true;
+    hasMelody = false;
+    rhythmString = rhythmPauses;
+}
 
+function onClickMelodyButton(event) {
+    const tonic = document.getElementById("tonic").value;
+    const scale = document.getElementById("scale").value;
+
+    if (hasRhythm === false) {
+        rhythmString = Generator.generateRandomRhythmWithPauses();
+        hasRhythm = true;
+    }
+
+    melodyString = Generator.generateRandomMelody(rhythmString, tonic, scale);
+    headers = Generator.generateAbcHeaders(tonic, scale, 120);
+
+    loadNewABC(headers + melodyString);
+
+    hasMelody = true;
+}
+
+function loadNewABC(abcString) {
     const cursorControl = { /* nani? */ };
     const abcOptions = { add_classes: true };
     const audioParams = { chordsOff: true };
@@ -51,6 +74,8 @@ function onClickRhythmButton(event) {
 }
 
 (() => {
-    const testButton = document.getElementById("rhythmButton");
-    testButton.addEventListener("click", onClickRhythmButton);
+    const rhythmButton = document.getElementById("rhythmButton");
+    rhythmButton.addEventListener("click", onClickRhythmButton);
+    const melodyButton = document.getElementById("melodyButton");
+    melodyButton.addEventListener("click", onClickMelodyButton);
 })()
