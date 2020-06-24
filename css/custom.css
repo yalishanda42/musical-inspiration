@@ -1,0 +1,12 @@
+svg, rect, path {
+    fill: white;
+    stroke: white;
+}
+
+.abcjs-top-of-system {
+    visibility: hidden;
+}
+
+.vegas-overlay {
+    background-image: url("../img/bg1.jpg");
+}
