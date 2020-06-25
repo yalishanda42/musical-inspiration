@@ -71,9 +71,9 @@ class Generator {
             "Gypsy minor": [0, -1, +1, +1, 0, 0, +1], // to minor
             "Minor pentatonic": [0, 0, 0, 0, 0], // to minor pentatonic
             "Major pentatonic": [0, 0, 0, 0, 0], // to major pentatonic
-            // "Japanese": [0, -1, 0, 0, 0],  // to minor pentatonic // TODO
-            // "Minor blues": [0, 0, 0, 0, 0, 0],  // to minor blues (6-tonic) // TODO
-            // "Major blues": [0, 0, 0, 0, 0, 0] // to major blues (6-tonic) // TODO
+            "Japanese": [0, -1, 0, 0, 0],  // not used // TODO: refactor
+            // "Minor blues": [0, 0, 0, 0, 0, 0],  // to minor blues (6-tonic) // TODO: implement
+            // "Major blues": [0, 0, 0, 0, 0, 0] // to major blues (6-tonic) // TODO: implement
         }
         return deltas[scale];
     }
@@ -96,6 +96,12 @@ class Generator {
     }
 
     static noteNotationsForScale(tonic, scale) {
+        if (scale === "Japanese") {
+            // hakxs
+            return Generator.noteNotationsForScale(tonic, "Phrygian Dominant")
+            .filter((n, i) => i !== 2 && i !== 6); // remove 3rd and 7th degrees of the mazna scale
+        }
+
         const tonicName = Generator.tonicNotation(tonic, scale);
         const baseScaleName = Generator.scaleNotation(scale);
         const deltas = Generator.noteDifferencesToBaseScale(scale);
