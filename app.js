@@ -7,15 +7,13 @@ function onClickRhythmButton(event) {
     const scale = document.getElementById("scale").value;
 
     const headers = Generator.generateAbcHeaders(tonic, scale, 120);
-    const rhythmPauses = Generator.generateRandomRhythmWithPauses();
-
-    const rhythmTonic = rhythmPauses.replace(/z/g, Generator.tonicNotation(tonic, scale));
+    const rhythmTonic = Generator.generateRandomRhythmWithTonic(tonic, scale);
 
     loadNewABC(headers + rhythmTonic);
 
     hasRhythm = true;
     hasMelody = false;
-    rhythmString = rhythmPauses;
+    rhythmString = rhythmTonic;
 }
 
 function onClickMelodyButton(event) {
@@ -23,7 +21,7 @@ function onClickMelodyButton(event) {
     const scale = document.getElementById("scale").value;
 
     if (hasRhythm === false) {
-        rhythmString = Generator.generateRandomRhythmWithPauses();
+        rhythmString = Generator.generateRandomRhythmWithTonic(tonic, scale);
         hasRhythm = true;
     }
 

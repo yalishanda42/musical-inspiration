@@ -45,8 +45,8 @@ class Generator {
         var note = notes[tonic];
         const scaleNotation = Generator.scaleNotation(scale);
         const sharpScaleIsIncorrect = teoria.note(note).scale(scaleNotation).simple()
-            .map(n => n.substring(1))
-            .some(a => a === "x" || a === "bb");
+            .map(n => n.substring(1)) // cut first symbol
+            .some(a => a === "x" || a === "bb"); // true if scale has double sharps or double flats
 
         if (sharpScaleIsIncorrect) {
             note = notes[+tonic + 1] + "b"; // assumes note was a sharp
@@ -118,15 +118,94 @@ class Generator {
         return teoria.note(tonicName).scale(baseScaleName).notes().map((n, i) => (deltas[i] !== 0) ? Generator.accidentalValueToAbcNotation(n.accidentalValue() + deltas[i]) + n.name() : n.name());
     }
 
-    static generateRandomRhythmWithPauses(beats=4, beatNote=4, bars=2) {
-        // TODO
-        return "z/2z/2 z/2z/4z/4 z/2z/2 z | z/2z/2 z/2z/4z/4 (3z/z/z/ z"; // TEST
+    static generateRandomRhythmWithTonic(tonic, scale, beats=4, beatNote=4, bars=2) {
+        var pulseLengths = Array(beats).fill(1);
+
+        if (beatNote == 8 || beatNote == 16 || beatNote == 32) {
+            if (beats == 1) {
+                // shouldn't really happen but whatever
+                pulseLengths = [1];
+            } else if (beats % 3 === 0) {
+                pulseLengths = Array(beats / 3).fill(3);
+            } else {
+                // TODO: create a more advanced algorithm
+                pulseLengths = [];
+                var beatsCovered = 0;
+                while (beatsCovered < beats) {
+                    if (beatsCovered + 3 == beats) {
+                        // only last partition is long that way
+                        beatsCovered += 3;
+                    } else {
+                        beatsCovered += 2;
+                    }
+                }
+            }
+        }
+
+        const tonicNote = Generator.tonicNotation(tonic, scale);
+        const durationChoices = ["", "/2", "/4", "(3"];
+        var result = "";
+        var previousWasPause = false;
+
+        for (let i = 0; i < bars; i++) {
+            for (let j = 0; j < pulseLengths.length; j++) {
+
+                // TODO: support ligatures, more tuplets, notes with longer and shorter duration
+
+                var lengthCovered = 0;
+
+                while (lengthCovered < pulseLengths[j]) {
+                    var choices = durationChoices
+                    if (lengthCovered !== 0) {
+                        choices = choices.filter(x => x !== "(3");
+                    }
+
+                    var duration = choices[Math.floor(Math.random() * choices.length)];
+                    var value = tonicNote;
+
+                    if (previousWasPause) {
+                        // TODO: improve
+                        var possible = [tonicNote, "z"];
+                        var value = possible[Math.floor(Math.random() * possible.length)];
+                    }
+
+                    var lengthAddition = 1;
+
+                    if (duration === "/2") {
+                        lengthAddition = 1/2;
+                    } else if (duration === "/4") {
+                        lengthAddition = 1/4;
+                    } else if (duration === "(3") {
+                        // TODO: improve
+                        lengthAddition = 1;
+                        duration = "(3" + value + "/" + value + "/" + value + "/";
+                        value = "";
+                    }
+
+                    if (lengthAddition + lengthCovered > pulseLengths[j]) {
+                        continue; // oof
+                    }
+
+                    lengthCovered += lengthAddition;
+                    result += value + duration;
+                    previousWasPause = value === "z";
+                }
+
+                result += " "; // pulse separator
+            }
+
+            result += "|"; // bar separator
+        }
+
+
+        return result; // TEST
     }
 
     static generateRandomMelody(rhythmAbcString, tonic, scale) {
         // TODO: improve algorithm, add tones from more octaves
-        const notes = Generator.noteNotationsForScale(tonic, scale).concat("z");
-        var result = rhythmAbcString.replace(/z/g, (z) => notes[Math.floor(Math.random() * notes.length)])
+        const notes = Generator.noteNotationsForScale(tonic, scale);
+        const tonicNotation = Generator.tonicNotation(tonic, scale);
+        var result = rhythmAbcString.replace(new RegExp(tonicNotation, "g"), (z) => notes[Math.floor(Math.random() * notes.length)])
         return result;
     }
 }
