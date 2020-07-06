@@ -1,29 +1,54 @@
-function generateAbcString() {
-    // TODO: implement algorithm
-    return `X:0
-M:3/4
-L:1/8
-K:Dm
-Ade|:"Dm"(f2d)e gf|"A7"e2^c4|"Gm"B>>^c BA BG|"A"A3Ade|"Dm"(f2d)e gf|"A7"e2^c4|
-"Gm"A>>B "A7"AG FE|1"Dm"D3Ade:|2"Dm"D3DEF||:"Gm"(G2D)E FG|"Dm"A2F4|"Gm"B>>c "A7"BA BG|
-"Dm"A3 DEF|"Gm"(G2D)EFG|"Dm"A2F4|"E°"E>>Fy "(A7)"ED^C2|1"Dm"D3DEF:|2"Dm"D6||`;
+var hasRhythm = false;
+var hasMelody = false;
+var rhythmString = null;
+
+var synthController = new ABCJS.synth.SynthController();
+
+function onClickRhythmButton(event) {
+    const tonic = document.getElementById("tonic").value;
+    const scale = document.getElementById("scale").value;
+
+    const headers = Generator.generateAbcHeaders(tonic, scale, 120);
+    const rhythmTonic = Generator.generateRandomRhythmWithTonic(tonic, scale);
+
+    loadNewABC(headers + rhythmTonic);
+
+    hasRhythm = true;
+    hasMelody = false;
+    rhythmString = rhythmTonic;
 }
 
-function onClickTestButton(event) {
-    var abcString = generateAbcString();
+function onClickMelodyButton(event) {
+    const tonic = document.getElementById("tonic").value;
+    const scale = document.getElementById("scale").value;
 
-    var cursorControl = { /* nani? */ };
-    var abcOptions = { add_classes: true };
-    var audioParams = { chordsOff: true };
+    if (hasRhythm === false) {
+        rhythmString = Generator.generateRandomRhythmWithTonic(tonic, scale);
+        hasRhythm = true;
+    }
 
-    var visualObj = ABCJS.renderAbc("sheetmusic", abcString, abcOptions);
+    melodyString = Generator.generateRandomMelody(rhythmString, tonic, scale);
+    headers = Generator.generateAbcHeaders(tonic, scale, 120);
+
+    loadNewABC(headers + melodyString);
+
+    hasMelody = true;
+}
+
+function loadNewABC(abcString) {
+    synthController.restart();
+
+    const cursorControl = { /* nani? */ };
+    const abcOptions = { add_classes: true };
+    const audioParams = { chordsOff: true };
+
+    const visualObj = ABCJS.renderAbc("sheetmusic", abcString, abcOptions);
 
     if (!ABCJS.synth.supportsAudio()) {
         document.querySelector("#midiplayer").innerHTML = "Audio is not supported in this browser.";
         return;
     }
 
-    var synthController = new ABCJS.synth.SynthController();
     synthController.load("#midiplayer",
         cursorControl,
         {
@@ -35,7 +60,7 @@ function onClickTestButton(event) {
         }
     );
 
-    var createSynth = new ABCJS.synth.CreateSynth();
+    const createSynth = new ABCJS.synth.CreateSynth();
     createSynth.init({ visualObj: visualObj[0] })
         .then(() => {
             synthController.setTune(visualObj[0], false, audioParams)
@@ -50,6 +75,8 @@ function onClickTestButton(event) {
 }
 
 (() => {
-    const testButton = document.getElementById("testButton");
-    testButton.addEventListener("click", onClickTestButton);
+    const rhythmButton = document.getElementById("rhythmButton");
+    rhythmButton.addEventListener("click", onClickRhythmButton);
+    const melodyButton = document.getElementById("melodyButton");
+    melodyButton.addEventListener("click", onClickMelodyButton);
 })()

@@ -7,7 +7,9 @@
         <link rel="stylesheet" type="text/css" href="./css/plugins.css">
         <link rel="stylesheet" type="text/css" href="./css/style.css">
         <link rel="stylesheet" type="text/css" href="./css/custom.css">
-        <script src="./js/abcjs_basic_5.11.0-min.js" type="text/javascript"></script>
+        <script src="./js/dependencies/abcjs_basic_5.11.0-min.js" type="text/javascript"></script>
+        <script src="./js/dependencies/teoria.js" type="text/javascript"></script>
+        <script src="./js/models/Generator.js" type="text/javascript"></script>
         <script src="./app.js" type="text/javascript" defer></script>
         <title>Musical Inspiration</title>
     </head>
@@ -17,8 +19,8 @@
             <div class="container">
                 <div class="text-center xs-padding-50px-top">
                     <h1 class="text-white font-size48 md-font-size44 sm-font-size36 xs-font-size28 font-weight-600 margin-40px-bottom sm-margin-30px-bottom xs-margin-20px-bottom">A random musical inspiration for musicians in need.</h1>
-                    <p class="text-white font-size22 md-font-size20 sm-font-size18 xs-font-size16 font-weight-300 width-75 xs-width-90 center-col margin-40px-bottom sm-margin-30px-bottom xs-margin-25px-bottom"><i>Expect it soon...</i></p>
-                    <a id="testButton" href="javascript:void(0)" class="btn1">Test</a>
+                    <a id="rhythmButton" href="javascript:void(0)" class="btn1">New rhythm</a>
+                    <a id="melodyButton" href="javascript:void(0)" class="btn1">New melody</a>
                     <div id="sheetmusic"></div>
                     <div id="midiplayer" class="abcjs-large"></div>
                     <div class="row">
@@ -64,12 +66,11 @@
                                     <option value="Minor pentatonic">Minor pentatonic</option>
                                     <option value="Major pentatonic">Major pentatonic</option>
                                     <option value="Japanese">Japanese (Мазна пентатоника)</option>
-                                    <option value="South-East Asian">South-East Asian</option>
                                 </optgroup>
-                                <optgroup label="Blues">
-                                    <option value="Minor blues">Minor blues</option>
-                                    <option value="Major blues">Major blues</option>
-                                </optgroup>
+                                <!-- <optgroup label="Blues"> -->
+                                    <!-- <option value="Minor blues">Minor blues</option> -->
+                                    <!-- <option value="Major blues">Major blues</option> -->
+                                <!-- </optgroup> -->
                             </select>
                         </div>
                     </div>
