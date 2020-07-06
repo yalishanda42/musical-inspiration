@@ -2,6 +2,8 @@ var hasRhythm = false;
 var hasMelody = false;
 var rhythmString = null;
 
+var synthController = new ABCJS.synth.SynthController();
+
 function onClickRhythmButton(event) {
     const tonic = document.getElementById("tonic").value;
     const scale = document.getElementById("scale").value;
@@ -34,6 +36,8 @@ function onClickMelodyButton(event) {
 }
 
 function loadNewABC(abcString) {
+    synthController.restart();
+
     const cursorControl = { /* nani? */ };
     const abcOptions = { add_classes: true };
     const audioParams = { chordsOff: true };
@@ -45,7 +49,6 @@ function loadNewABC(abcString) {
         return;
     }
 
-    const synthController = new ABCJS.synth.SynthController();
     synthController.load("#midiplayer",
         cursorControl,
         {

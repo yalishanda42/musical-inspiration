@@ -103,7 +103,7 @@ class Generator {
         }
 
         const tonicName = Generator.tonicNotation(tonic, scale);
-        const baseScaleName = Generator.scaleNotation(scale);
+        var baseScaleName = Generator.scaleNotation(scale);
         const deltas = Generator.noteDifferencesToBaseScale(scale);
 
         if (deltas.every(n => n === 0)) {
