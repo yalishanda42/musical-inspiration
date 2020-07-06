@@ -163,7 +163,7 @@ class Generator {
                     var duration = choices[Math.floor(Math.random() * choices.length)];
                     var value = tonicNote;
 
-                    if (previousWasPause) {
+                    if (!previousWasPause) {
                         // TODO: improve
                         var possible = [tonicNote, "z"];
                         var value = possible[Math.floor(Math.random() * possible.length)];
@@ -178,7 +178,11 @@ class Generator {
                     } else if (duration === "(3") {
                         // TODO: improve
                         lengthAddition = 1;
-                        duration = "(3" + value + "/" + value + "/" + value + "/";
+                        if (value === "z") {
+                            duration = "z";
+                        } else {
+                            duration = "(3" + value + "/" + value + "/" + value + "/";
+                        }
                         value = "";
                     }
 
